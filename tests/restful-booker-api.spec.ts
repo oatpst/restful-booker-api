@@ -40,7 +40,7 @@ test("เข้าสู่ระบบและ การจองด้วย 
 				"additionalneeds": "Spare-bed and Dinner"
 			}
 		});
-		expect(responseCreateBooking.ok(), `Failed to create booking. Status: ${responseCreateBooking.status()}`).toBeTruthy();
+		expect(responseCreateBooking.ok()).toBeTruthy();
 		const responseBody = await responseCreateBooking.json();
 		await test.info().attach("API-Booking Response", {
 			body: JSON.stringify(responseBody, null, 2),
@@ -58,6 +58,17 @@ test("เข้าสู่ระบบและ การจองด้วย 
 			"additionalneeds": "Spare-bed and Dinner"
 		})
 	});
+
+	await test.step("ตรวจสอบ Bookingsids", async () => {
+		const responseBookingIds = await request.get("https://restful-booker.herokuapp.com/booking?firstname=Pisit&lastname=Wanakitrungrueng")
+		expect(responseBookingIds.ok()).toBeTruthy();
+		const responseBody = await responseBookingIds.json();
+		await test.info().attach("API-Bookingids Response", {
+			body: JSON.stringify(responseBody, null, 2),
+			contentType: "application/json"
+		});
+	});
+
 	// await test.step("ตรวจสอบสถานะการจองที่พัก", async () => {
 	// 		const responseBooking = await request.get("", )
 	// });
